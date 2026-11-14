@@ -467,11 +467,12 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Sidebar />
 
-     <main className="md:ml-64 min-h-screen p-6 pt-24 md:pt-8 md:px-8">
+      <main className="min-h-screen min-w-0 w-full p-4 pt-24 sm:p-5 md:ml-64 md:w-auto md:p-6 lg:p-8">
         <Header
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-        />
+  searchTerm={searchTerm}
+  onSearchChange={setSearchTerm}
+  tasks={tasks}
+/>
 
         <TaskStats tasks={tasks} />
         <TaskAnalytics tasks={tasks} />

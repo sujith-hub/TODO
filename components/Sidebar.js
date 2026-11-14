@@ -29,7 +29,6 @@ import {
   useSyncExternalStore,
 } from "react";
 
-// Theme subscription
 function subscribeToTheme(callback) {
   window.addEventListener("storage", callback);
   window.addEventListener("theme-change", callback);
@@ -60,12 +59,10 @@ export default function Sidebar() {
     getServerThemeSnapshot
   );
 
-  // Apply saved theme
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
 
-  // Toggle theme
   function toggleDarkMode() {
     const newMode = !getThemeSnapshot();
 
@@ -77,56 +74,18 @@ export default function Sidebar() {
     window.dispatchEvent(new Event("theme-change"));
   }
 
-  // Navigation items
   const menuItems = [
-    {
-      name: "Dashboard",
-      path: "/dashboard",
-      icon: LayoutDashboard,
-    },
-    {
-      name: "My Tasks",
-      path: "/dashboard/tasks",
-      icon: ListTodo,
-    },
-    {
-      name: "Daily Checks",
-      path: "/dashboard/daily-checks",
-      icon: CalendarCheck,
-    },
-    {
-      name: "Weekly Checks",
-      path: "/dashboard/weekly-checks",
-      icon: CalendarRange,
-    },
-    {
-      name: "Monthly Checks",
-      path: "/dashboard/monthly-checks",
-      icon: Calendar,
-    },
-    {
-      name: "Completed",
-      path: "/dashboard/completed",
-      icon: CheckCircle,
-    },
-    {
-      name: "Calendar",
-      path: "/dashboard/calendar",
-      icon: CalendarDays,
-    },
-    {
-      name: "Analysis",
-      path: "/dashboard/analysis",
-      icon: BarChart3,
-    },
-    {
-      name: "Settings",
-      path: "/dashboard/settings",
-      icon: Settings,
-    },
+    { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+    { name: "My Tasks", path: "/dashboard/tasks", icon: ListTodo },
+    { name: "Daily Checks", path: "/dashboard/daily-checks", icon: CalendarCheck },
+    { name: "Weekly Checks", path: "/dashboard/weekly-checks", icon: CalendarRange },
+    { name: "Monthly Checks", path: "/dashboard/monthly-checks", icon: Calendar },
+    { name: "Completed", path: "/dashboard/completed", icon: CheckCircle },
+    { name: "Calendar", path: "/dashboard/calendar", icon: CalendarDays },
+    { name: "Analysis", path: "/dashboard/analysis", icon: BarChart3 },
+    { name: "Settings", path: "/dashboard/settings", icon: Settings },
   ];
 
-  // Logout
   async function handleLogout() {
     try {
       const { error } = await supabase.auth.signOut();
@@ -145,8 +104,8 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* MOBILE TOP BAR */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+      {/* Mobile Top Bar */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 h-[74px] flex items-center justify-between bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4">
         <h1 className="text-xl font-bold text-purple-600">
           MyTasks.
         </h1>
@@ -157,29 +116,26 @@ export default function Sidebar() {
           aria-label="Open menu"
           className="p-2 rounded-lg text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
         >
-          <Menu size={24} />
+          <Menu size={25} />
         </button>
       </div>
 
-      {/* MOBILE BACKDROP */}
+      {/* Mobile Backdrop */}
       {mobileOpen && (
         <button
           type="button"
           aria-label="Close menu"
           onClick={() => setMobileOpen(false)}
-          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+          className="fixed inset-0 z-40 bg-black/50 md:hidden"
         />
       )}
 
-      {/* SIDEBAR */}
+      {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-72 h-screen overflow-y-auto bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-6 flex flex-col transition-transform duration-300 md:translate-x-0 md:w-64 ${
-          mobileOpen
-            ? "translate-x-0"
-            : "-translate-x-full"
-        }`}
+        className={`fixed inset-y-0 left-0 z-50 w-72 md:w-64 h-screen overflow-y-auto bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-5 md:p-6 flex flex-col transition-transform duration-300 ${
+          mobileOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0`}
       >
-        {/* LOGO AND MOBILE CLOSE BUTTON */}
         <div className="flex items-center justify-between mb-10">
           <h1 className="text-2xl font-bold text-purple-600">
             MyTasks.
@@ -199,7 +155,6 @@ export default function Sidebar() {
           MENU
         </p>
 
-        {/* NAVIGATION */}
         <nav className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;
@@ -227,32 +182,25 @@ export default function Sidebar() {
           })}
         </nav>
 
-        {/* DARK MODE */}
-        <button
-          type="button"
-          onClick={toggleDarkMode}
-          className="flex items-center gap-3 w-full px-4 py-3 mt-6 rounded-lg text-gray-600 hover:bg-purple-50 hover:text-purple-600 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
-        >
-          {darkMode ? (
-            <Sun size={20} />
-          ) : (
-            <Moon size={20} />
-          )}
+        <div className="mt-auto pt-6 space-y-2">
+          <button
+            type="button"
+            onClick={toggleDarkMode}
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-gray-600 hover:bg-purple-50 hover:text-purple-600 dark:text-gray-300 dark:hover:bg-gray-700"
+          >
+            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+            <span>{darkMode ? "Light Mode" : "Dark Mode"}</span>
+          </button>
 
-          <span>
-            {darkMode ? "Light Mode" : "Dark Mode"}
-          </span>
-        </button>
-
-        {/* LOGOUT BELOW DARK MODE */}
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="flex items-center gap-3 w-full px-4 py-3 mt-2 rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-500 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
-        >
-          <LogOut size={20} />
-          <span>Logout</span>
-        </button>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-500 dark:text-gray-300 dark:hover:bg-gray-700"
+          >
+            <LogOut size={20} />
+            <span>Logout</span>
+          </button>
+        </div>
       </aside>
     </>
   );
